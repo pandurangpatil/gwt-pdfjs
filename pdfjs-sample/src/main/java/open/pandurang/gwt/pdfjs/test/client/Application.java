@@ -1,7 +1,9 @@
 package open.pandurang.gwt.pdfjs.test.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import open.pandurang.gwt.pdfjs.client.PDFApiReadyEvent;
@@ -12,12 +14,21 @@ import open.pandurang.gwt.pdfjs.client.PDFViewer;
 public class Application implements EntryPoint {
 
 	public void onModuleLoad() {
-		RootPanel.get().add(new Label("Hello World"));
+		final PDFViewer viewer = new PDFViewer();
+		Button btn = new Button("CHANGE");
+		btn.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Auto-generated method stub
+				viewer.updateFileUrl("/testfile.pdf");
+			}
+		});
+		RootPanel.get().add(btn);
 		PDFJS.INSTANCE.addAPIReadyHandler(new PDFApiReadyEventHandler() {
 
 			@Override
 			public void onApiReady(PDFApiReadyEvent event) {
-				PDFViewer viewer = new PDFViewer();
 				viewer.setWidth("1000px");
 				viewer.setFileUrl("http://127.0.0.1:8888/multi-page.pdf");
 				RootPanel.get().add(viewer);

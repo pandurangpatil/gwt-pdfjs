@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>PDFJS test</title>
+<script type="text/javascript">
+	function pdfcallback() {
+		var can = document.getElementById('pdf-canvas');
+		var canCtx = can.getContext('2d');
+		PDFJS.getDocument({ url: "http://127.0.0.1:8888/testfile.pdf" }).then(function(pdf_doc) {
+		    		console.log('total pages - > ' + pdf_doc.numPages);
+		    		pdf_doc.getPage(1).then(function(page) {
+		    			// As the canvas is of a fixed width we need to set the scale of the viewport accordingly
+		    			alert('can width - >' + can.width);
+		    	        var scale_required = can.width / page.getViewport(1).width;
+					console.log('Scale required ->' + scale_required);
+		    	        // Get viewport of the page at required scale
+		    	        var viewport = page.getViewport(scale_required);
+		    	        // Set canvas height
+		    	        can.height = viewport.height;
+
+		    	        var renderContext = {
+		    	            canvasContext: canCtx,
+		    	            viewport: viewport
+		    	        };
+		    	        
+		    	        // Render the page contents in the canvas
+		    	        page.render(renderContext).then(function() {
+		    	        		alert("File rendered.")
+		    	        });
+		    		}).catch(function(error) {
+		    	        alert(error.message);
+		    	    });
+		    }).catch(function(error) {
+		        alert(error.message);
+		    });
+	}
+</script>
+<script type="text/javascript" src="PDFJS/PDFJS.nocache.js"></script>
+</head>
+
+<body>
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+		style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+</body>
+</html>

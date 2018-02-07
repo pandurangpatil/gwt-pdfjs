@@ -29,7 +29,6 @@ public class Application implements EntryPoint {
 
 			@Override
 			public void onApiReady(PDFApiReadyEvent event) {
-				viewer.setWidth("1000px");
 				viewer.setFileUrl("http://127.0.0.1:8888/multi-page.pdf");
 				RootPanel.get().add(viewer);
 			}

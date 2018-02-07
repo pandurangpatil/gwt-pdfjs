@@ -23,7 +23,7 @@ public class PDFViewer extends Composite {
 		setHeight("90vh");
 		String existing = panel.getElement().getAttribute("style");
 		panel.getElement().setAttribute("style",
-				existing + "overflow-y: scroll; width: 1000px; border: 1px black solid; padding: 20px;");
+				existing + "overflow-y: scroll; border: 1px black solid; padding: 20px;");
 	}
 
 	public String getFileUrl() {

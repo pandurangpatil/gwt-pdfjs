@@ -20,6 +20,9 @@ public class PDFPage extends JavaScriptObject {
 				.then(
 						function() {
 							handler.@open.pandurang.gwt.pdfjs.client.RenderComplete::onComplete()();
+						},
+						function(error) {
+							handler.@open.pandurang.gwt.pdfjs.client.RenderComplete::onError(Lopen/pandurang/gwt/pdfjs/client/Error;)(error);
 						});
 	}-*/;
 }

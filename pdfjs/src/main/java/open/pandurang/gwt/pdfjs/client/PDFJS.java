@@ -39,6 +39,9 @@ public class PDFJS {
 				.then(
 						function(pdf_doc) {
 							donehandler.@open.pandurang.gwt.pdfjs.client.FetchDocumentDone::onDone(Lopen/pandurang/gwt/pdfjs/client/PDFDoc;)(pdf_doc);
+						},
+						function(error) {
+							donehandler.@open.pandurang.gwt.pdfjs.client.FetchDocumentDone::onError(Lopen/pandurang/gwt/pdfjs/client/Error;)(error);
 						});
 	}-*/;
 }

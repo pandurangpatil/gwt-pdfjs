@@ -10,11 +10,15 @@ public class Error extends JavaScriptObject {
 		return (Error) createObject();
 	}
 
-	public final native void setMessage(String message)/*-{
-		this.message = message;
-	}-*/;
-
 	public final native String getMessage()/*-{
 		return this.message;
+	}-*/;
+
+	public final native String getName()/*-{
+		return this.name;
+	}-*/;
+
+	public final native String getCode()/*-{
+		return this.code;
 	}-*/;
 }

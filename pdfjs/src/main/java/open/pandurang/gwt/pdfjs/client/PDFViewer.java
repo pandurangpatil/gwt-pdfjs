@@ -2,7 +2,12 @@ package open.pandurang.gwt.pdfjs.client;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -14,28 +19,34 @@ public class PDFViewer extends Composite {
 	interface PDFViewerUiBinder extends UiBinder<Widget, PDFViewer> {
 	}
 
+	HTMLPanel parentPanel;
+	@UiField
 	HTMLPanel panel;
-	private String fileUrl;
+	@UiField
+	DivElement loaderElement;
+
+	private FileDetails file;
+	private EventBus eventBus = new SimpleEventBus();
 
 	public PDFViewer() {
-		panel = (HTMLPanel) uiBinder.createAndBindUi(this);
-		initWidget(panel);
+		parentPanel = (HTMLPanel) uiBinder.createAndBindUi(this);
+		initWidget(parentPanel);
 		setHeight("90vh");
-		String existing = panel.getElement().getAttribute("style");
-		panel.getElement().setAttribute("style",
+		String existing = parentPanel.getElement().getAttribute("style");
+		parentPanel.getElement().setAttribute("style",
 				existing + "overflow-y: scroll; border: 1px black solid; padding: 20px;");
 	}
 
-	public String getFileUrl() {
-		return fileUrl;
+	public FileDetails getFile() {
+		return file;
 	}
 
-	public void setFileUrl(String fileUrl) {
-		this.fileUrl = fileUrl;
+	public void setFile(FileDetails file) {
+		this.file = file;
 	}
 
-	public void updateFileUrl(String fileUrl) {
-		this.fileUrl = fileUrl;
+	public void updateFile(FileDetails file) {
+		this.file = file;
 		render();
 	}
 
@@ -47,26 +58,37 @@ public class PDFViewer extends Composite {
 		this.panel.setHeight(height);
 	}
 
+	public HandlerRegistration addErrorHandler(ErrorHandler handler) {
+		return eventBus.addHandler(ErrorEvent.TYPE, handler);
+	}
+
+	public void showLoader(boolean flag) {
+		if (flag) {
+			loaderElement.setAttribute("style", "text-align: center; margin: 40px;");
+		} else {
+			loaderElement.setAttribute("style", "display: none;");
+		}
+	}
+
 	private void render() {
 		panel.clear();
-		FileDetails file = FileDetails.create();
-		file.setUrl(fileUrl);
+		showLoader(true);
 		PDFJS.INSTANCE.getDocument(file, new FetchDocumentDone() {
 
 			@Override
 			public void onError(Error error) {
-				// TODO: This doesn't get call as JSNI doesn't allow you to call catch method of
-				// promise
+				showLoader(false);
+				eventBus.fireEvent(new ErrorEvent(error));
 			}
 
 			@Override
 			public void onDone(PDFDoc doc) {
+				showLoader(false);
 				for (int index = 1; index <= doc.getNumPages(); index++) {
 					doc.getPage(index, new GetPageDone() {
 						@Override
 						public void onError(Error error) {
-							// TODO: This doesn't get call as JSNI doesn't allow you to call catch method of
-							// promise
+							eventBus.fireEvent(new ErrorEvent(error));
 						}
 
 						@Override
@@ -87,8 +109,7 @@ public class PDFViewer extends Composite {
 
 								@Override
 								public void onError(Error error) {
-									// TODO Auto-generated method stub
-
+									eventBus.fireEvent(new ErrorEvent(error));
 								}
 
 								@Override
@@ -106,7 +127,7 @@ public class PDFViewer extends Composite {
 
 	@Override
 	public void onLoad() {
-		if (fileUrl != null && !fileUrl.isEmpty()) {
+		if (file != null) {
 			render();
 		}
 	}

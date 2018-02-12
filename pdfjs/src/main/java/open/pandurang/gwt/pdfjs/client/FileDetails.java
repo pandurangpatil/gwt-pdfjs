@@ -17,4 +17,13 @@ public class FileDetails extends JavaScriptObject {
 	public final native String getUrl()/*-{
 		return this.url;
 	}-*/;
+
+	public final native void setPassword(String password)/*-{
+		this.password = password;
+	}-*/;
+
+	public final native String getPassword()/*-{
+		return this.password;
+	}-*/;
+
 }

@@ -5,5 +5,7 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
+		<div ui:field="loaderElement">Loading document ...</div>
+		<g:HTMLPanel ui:field="panel"></g:HTMLPanel>
 	</g:HTMLPanel>
 </ui:UiBinder> 

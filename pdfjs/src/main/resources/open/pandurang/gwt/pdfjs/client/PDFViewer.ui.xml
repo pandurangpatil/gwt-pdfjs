@@ -5,6 +5,11 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
+		<div style="position: fixed;top: 1%;left: 4%;">
+			<g:Button ui:field="zoomin">+</g:Button>
+			<g:Button ui:field="zoomout">-</g:Button>
+			<g:Button ui:field="original">RESET</g:Button>
+		</div>
 		<div ui:field="loaderElement">Loading document ...</div>
 		<g:HTMLPanel ui:field="panel"></g:HTMLPanel>
 	</g:HTMLPanel>

@@ -25,7 +25,8 @@ public class PDFViewerPage extends Composite {
 		panel = (HTMLPanel) uiBinder.createAndBindUi(this);
 		initWidget(panel);
 		String existing = panel.getElement().getAttribute("style");
-		panel.getElement().setAttribute("style", existing + "border: 1px gray solid; margin-bottom: 20px; box-shadow: 0px 0px 8px grey;");
+		panel.getElement().setAttribute("style", existing
+				+ "border: 1px gray solid; margin-bottom: 20px; box-shadow: 0px 0px 8px grey;margin:10px auto;display:block;");
 
 	}
 
@@ -34,6 +35,7 @@ public class PDFViewerPage extends Composite {
 	}
 
 	public void setWidth(int width) {
+		panel.setWidth(width + 2 + "px");
 		canvas.getElement().setAttribute("width", width + "");
 	}
 
